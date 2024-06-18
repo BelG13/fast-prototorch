@@ -4,9 +4,9 @@ metrics:
     origin_class:
       _target_: metrics.accuracy.AccuracyMetric
 
-  - name: recall
-    origin_class:
-      _target_: metrics.recall.RecallMetric
+  # - name: recall
+  #   origin_class:
+  #     _target_: metrics.recall.RecallMetric
 
 base_models:
   # - name: prototype1
