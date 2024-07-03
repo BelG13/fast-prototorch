@@ -11,7 +11,7 @@ Welcome to Fast Prototorch! This project aims to facilitate rapid prototyping of
 To get started, clone the repository and follow the instructions below on how to use it.
 
 ```bash
-git clone https://github.com/yourusername/fast-prototorch.git
+git clone https://github.com/BelG13/fast-prototorch.git
 cd fast-prototorch
 ```
 
