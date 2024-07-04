@@ -3,10 +3,10 @@ from .utils import _get_conditions
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class TPR(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+        """Compute the true_positive_rate
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,10 +14,10 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: true_positive_rate of that batch
         """
 
-        # prediction
+        # predicted values
         preds = logits.argmax(dim=1)
 
         # conditions

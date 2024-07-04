@@ -1,12 +1,7 @@
-import torch
-import torchvision
 import numpy as np
 import logging
-from models.ProtoTest import ProtoTest
-from metrics.accuracy import accuracy
 from datasets.titanic.titanic import DataTitanic
 from torch.utils.data import DataLoader
-import matplotlib.pyplot as plt
 from hydra.utils import instantiate
 from tqdm import tqdm
 from metrics.plot.save_results import plot_dict, plot_metrics

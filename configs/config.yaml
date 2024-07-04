@@ -1,12 +1,38 @@
-
+run_config:
+  - run_name: "prototyping"
+  
 metrics:
+  - name: recall
+    origin_class:
+      _target_: metrics.Recall
+
   - name: accuracy
     origin_class:
-      _target_: metrics.accuracy.AccuracyMetric
+      _target_: metrics.Accuracy
 
-  # - name: recall
-  #   origin_class:
-  #     _target_: metrics.recall.RecallMetric
+  - name: TPR
+    origin_class:
+      _target_: metrics.TPR
+
+  - name: MK
+    origin_class:
+      _target_: metrics.MK
+
+  - name: f1
+    origin_class:
+      _target_: metrics.F1score
+
+  - name: lrminus
+    origin_class:
+      _target_: metrics.LRMinus
+
+  - name: lrplus
+    origin_class:
+      _target_: metrics.LRPlus
+
+  - name: prevalence
+    origin_class:
+      _target_: metrics.PT
 
 base_models:
   # - name: prototype1
@@ -29,39 +55,6 @@ base_models:
       _target_: torch.optim.Adam
     criterion:
       _target_: torch.nn.CrossEntropyLoss
-
-  # - name: prototype-50
-  #   parameters:
-  #     _target_: models.ProtoTest.ProtoTest
-  #     in_features: 9
-  #     out_features: 50
-  #     n_classes: 2
-  #   optimizer:
-  #     _target_: torch.optim.Adam
-  #   criterion:
-  #     _target_: torch.nn.CrossEntropyLoss
-
-  - name: prototype-1028
-    parameters:
-      _target_: models.ProtoTest.ProtoTest
-      in_features: 9
-      out_features: 1028
-      n_classes: 2
-    optimizer:
-      _target_: torch.optim.Adam
-    criterion:
-      _target_: torch.nn.CrossEntropyLoss
-
-  # - name: prototype-2040
-  #   parameters:
-  #     _target_: models.ProtoTest.ProtoTest
-  #     in_features: 9
-  #     out_features: 2040
-  #     n_classes: 2
-  #   optimizer:
-  #     _target_: torch.optim.Adam
-  #   criterion:
-  #     _target_: torch.nn.CrossEntropyLoss
 
   - name: fdd1
     parameters:
@@ -94,47 +87,4 @@ base_models:
       _target_: torch.optim.Adam
     criterion:
       _target_: torch.nn.CrossEntropyLoss
-
-  - name: resid-512
-    parameters:
-      _target_: models.Residual.Residual
-      in_features: 9
-      transit_size: 512
-      n_classes: 2
-    optimizer: 
-      _target_: torch.optim.Adam
-    criterion:
-      _target_: torch.nn.CrossEntropyLoss
-
-  - name: resid-1024
-    parameters:
-      _target_: models.Residual.Residual
-      in_features: 9
-      transit_size: 1024
-      n_classes: 2
-    optimizer: 
-      _target_: torch.optim.Adam
-    criterion:
-      _target_: torch.nn.CrossEntropyLoss
-
-  - name: resid-2048
-    parameters:
-      _target_: models.Residual.Residual
-      in_features: 9
-      transit_size: 2048
-      n_classes: 2
-    optimizer: 
-      _target_: torch.optim.Adam
-    criterion:
-      _target_: torch.nn.CrossEntropyLoss
-
-  # - name: cnn
-  #   parameters:
-  #     _target_: models.protoCNN.ProtoCNN
-  #     n_classes: 10
-  #   optimizer:
-  #     _target_: torch.optim.Adam
-  #   criterion:
-  #     _target_: torch.nn.CrossEntropyLoss
-  
 

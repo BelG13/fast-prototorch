@@ -1,11 +1,14 @@
 import torch
+from .utils import _get_conditions
+from .true_negative_rate import TNR
+from .true_positive_rate import TPR
 from ._BaseMetric import _BaseMetric
 
 
-class Accuracy(_BaseMetric):
+class BM(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = None):
-        """Compute the accuracy of a given batch
+        """Compute the informedness.
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -13,7 +16,10 @@ class Accuracy(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: accuracy score
+            float: informedness of that batch
         """
-        preds = logits.argmax(dim=1)
-        return (preds == y).int().sum(dim=0).item() / len(preds)
+
+        tpr = TPR()(logits, y)
+        tnr = TNR()(logits, y)
+
+        return tpr + tnr - 1

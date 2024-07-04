@@ -1,12 +1,14 @@
 import torch
-from .utils import _get_conditions
+from math import sqrt
+from .true_positive_rate import TPR
+from .false_positive_rate import FPR
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class PT(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+        """Compute the prevalence threshold
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,13 +16,10 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: prevalence threshold of that batch
         """
 
-        # prediction
-        preds = logits.argmax(dim=1)
+        tpr = TPR()(logits, y)
+        fpr = FPR()(logits, y)
 
-        # conditions
-        tp, fp, tn, fn = _get_conditions(preds, y)
-
-        return tp / (tp + fn) if (tp + fn) > 0 else default
+        return (sqrt(tpr * fpr) - fpr) / (tpr - fpr) if (tpr - fpr) != 0 else default

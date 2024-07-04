@@ -1,12 +1,13 @@
 import torch
-from .utils import _get_conditions
+from .true_negative_rate import TNR
+from .false_negative_rate import FNR
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class LRMinus(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+        """Compute the negative likelihood ratio
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,13 +15,10 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: negative likelihood ratio of that batch
         """
 
-        # prediction
-        preds = logits.argmax(dim=1)
+        tnr = TNR()(logits, y)
+        fnr = FNR()(logits, y)
 
-        # conditions
-        tp, fp, tn, fn = _get_conditions(preds, y)
-
-        return tp / (tp + fn) if (tp + fn) > 0 else default
+        return tnr / fnr if fnr != 0 else default
