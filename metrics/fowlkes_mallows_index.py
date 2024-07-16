@@ -1,11 +1,13 @@
 import torch
+from math import sqrt
+from .precision import Precision
+from .true_positive_rate import TPR
 from ._BaseMetric import _BaseMetric
 
 
-class Accuracy(_BaseMetric):
-
+class FM(_BaseMetric):
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = None):
-        """Compute the accuracy of a given batch
+        """Compute he fowlkes_mallows_index
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -13,7 +15,10 @@ class Accuracy(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: accuracy score
+            float: fowlkes_mallows_index of that batch
         """
-        preds = logits.argmax(dim=1)
-        return (preds == y).int().sum(dim=0).item() / len(preds)
+
+        tpr = TPR()(logits, y)
+        ppv = Precision()(logits, y)
+
+        return sqrt(tpr * ppv)

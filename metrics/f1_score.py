@@ -3,10 +3,10 @@ from .utils import _get_conditions
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class F1score(_BaseMetric):
 
-    def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+    def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = None):
+        """Compute f1 score
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,13 +14,13 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: f1 score of that batch
         """
 
-        # prediction
+        # predicted values
         preds = logits.argmax(dim=1)
 
         # conditions
         tp, fp, tn, fn = _get_conditions(preds, y)
 
-        return tp / (tp + fn) if (tp + fn) > 0 else default
+        return (2 * tp) / (2 * tp + fp + fn)

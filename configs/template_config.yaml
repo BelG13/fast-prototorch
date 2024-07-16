@@ -1,0 +1,36 @@
+run_config:
+  - run_name: "your run name"
+  
+metrics:
+  - name: recall
+    origin_class:
+      _target_: metrics.Recall
+
+  - name: accuracy
+    origin_class:
+      _target_: metrics.Accuracy
+
+base_models:
+
+  - name: "your first model name"
+    parameters:
+      _target_: models.ProtoTest.ProtoTest ## path to your model in the /models folder
+      ## the arguments that you want to instantiate your model with
+      in_features: 9
+      out_features: 1028
+      n_classes: 2
+    optimizer:
+      _target_: torch.optim.Adam
+    criterion:
+      _target_: torch.nn.CrossEntropyLoss
+
+  - name: "your second model name"
+    parameters:
+      _target_: models.FFD.FFD ## path to your model in the /models folder
+      ## the arguments that you want to instantiate your model with
+      in_features: 9
+      n_classes: 2
+    optimizer:
+      _target_: torch.optim.AdamW
+    criterion:
+      _target_: torch.nn.CrossEntropyLoss

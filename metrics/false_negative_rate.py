@@ -3,10 +3,10 @@ from .utils import _get_conditions
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class FNR(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+        """Compute the false negative rate
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,13 +14,13 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: false negative rate of that batch
         """
 
-        # prediction
+        # predicted values
         preds = logits.argmax(dim=1)
 
         # conditions
         tp, fp, tn, fn = _get_conditions(preds, y)
 
-        return tp / (tp + fn) if (tp + fn) > 0 else default
+        return fn / (tp + fn) if (tp + fn) > 0 else default

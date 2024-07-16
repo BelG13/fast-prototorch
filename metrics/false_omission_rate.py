@@ -3,10 +3,10 @@ from .utils import _get_conditions
 from ._BaseMetric import _BaseMetric
 
 
-class Recall(_BaseMetric):
+class FOR(_BaseMetric):
 
     def metric_func(self, logits: torch.Tensor, y: torch.Tensor, default: float = 0):
-        """Compute the recall
+        """Compute the false omission rate (FOR)
 
         Args:
             logits (torch.Tensor): output from the model (B, C)
@@ -14,13 +14,13 @@ class Recall(_BaseMetric):
             default (float): Value to return if the metric is not well defined
 
         Returns:
-            float: the recall of the batch
+            float: The false omission rate of that batch
         """
 
-        # prediction
+        # predicted values
         preds = logits.argmax(dim=1)
 
         # conditions
-        tp, fp, tn, fn = _get_conditions(preds, y)
+        _, _, tn, fn = _get_conditions(preds, y)
 
-        return tp / (tp + fn) if (tp + fn) > 0 else default
+        return fn / (tn + fn) if (tn + fn) > 0 else default
