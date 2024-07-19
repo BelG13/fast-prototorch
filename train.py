@@ -133,8 +133,8 @@ if __name__ == "__main__":
     
     model_losses, scores = train()
     # print(scores)
-    plot_dict(model_losses, path="test_loss.png")
-    plot_metrics(scores, "test_metric.png")
+    plot_dict(model_losses)
+    plot_metrics(scores)
     
     
     
