@@ -3,7 +3,7 @@ import hydra
 import os
 from omegaconf import DictConfig, OmegaConf
 
-def plot_dict(model_losses: dict, path: str):
+def plot_dict(model_losses: dict):
     """create a plot for the loss over the epoch
 
     Args:
@@ -16,7 +16,7 @@ def plot_dict(model_losses: dict, path: str):
     """
     
     run_config = dict()
-    @hydra.main(config_path="/Users/belboss/Desktop/Coding/fast-prototorch/configs", config_name="config")
+    @hydra.main(config_path=f"{os.getcwd()}/configs", config_name="config", version_base="1.1")
     def _main(cfg: DictConfig):
         """Get the run parameters
 
@@ -30,6 +30,12 @@ def plot_dict(model_losses: dict, path: str):
     
     # path of the artifacts 
     run_path = "./artifacts/" + run_config.get("run_name")
+    path_exists = os.path.exists(run_path)
+    is_directory = os.path.isdir(run_path)
+    
+    # check if the run folder already exist
+    if not (path_exists and is_directory):
+        os.mkdir(run_path)
     
     fig, ax = plt.subplots()
     for model_name, losses in model_losses.items():
@@ -44,7 +50,7 @@ def plot_dict(model_losses: dict, path: str):
     plt.savefig(f"{run_path}/loss")
 
 
-def plot_metrics(scores: dict, path: str)-> None:
+def plot_metrics(scores: dict)-> None:
     """Creates the plots for all the metrics mentionned in the config file.
 
     Args:
@@ -56,7 +62,7 @@ def plot_metrics(scores: dict, path: str)-> None:
     
     metric_names = []
     run_config = dict()
-    @hydra.main(config_path="/Users/belboss/Desktop/Coding/fast-prototorch/configs", config_name="config")
+    @hydra.main(config_path=f"{os.getcwd()}/configs", config_name="config", version_base="1.1")
     def _main(cfg: DictConfig):
         """Get the metrics names and the run parameters
 
